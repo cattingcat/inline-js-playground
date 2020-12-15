@@ -22,8 +22,10 @@ someJsFunc = withSession defaultConfig
         inc: function() {
           console.log('inc');
           this.a = this.a + 1;
+          return this;
         }
       } |]
-    _   <- eval @JSVal session $ [js| $val.inc(); |]
-    res <- eval @JSVal session $ [js| return $val.a; |]
+    a   <- eval @EncodedJSON session $ [js| return '' + $val.inc(); |]
+    res <- eval @EncodedJSON session $ [js| return '' + $val.a; |]
+    print a
     print res
